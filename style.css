@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    background-color: #111;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #1a1a1a;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 100, 0, 0.2);
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #00cc44;
+    text-shadow: 0 0 5px #006400;
+  }
+  
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+    justify-content: center;
+  }
+  
+  input, select, button {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    font-size: 1rem;
+  }
+  
+  input, select {
+    flex: 1 1 200px;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  button {
+    background-color: #006400;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    flex: 1 1 120px;
+  }
+  
+  button:hover {
+    background-color: #00cc44;
+  }
+  
+  .renda-atual,
+  .saldo,
+  .historico,
+  .planejamento {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #222;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 100, 0, 0.2);
+  }
+  
+  h2 {
+    color: #00cc44;
+    margin-bottom: 10px;
+  }
+  
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
+  }
+  
+  ul li {
+    padding: 10px;
+    background-color: #2a2a2a;
+    border-left: 6px solid #006400;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  ul li.renda {
+    border-color: #00cc44;
+  }
+  
+  ul li.despesa {
+    border-color: #cc0000;
+  }
+  
+  #saldo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00cc44;
+  }
+  

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controle Financeiro Pessoal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>Controle Financeiro</h1>
+
+         <!-- Saldo -->
+         <div class="saldo">
+            <h2>Saldo Atual: <span id="saldo">R$ 0,00</span></h2>
+          </div>
+
+    <form id="form-transacao">
+      <input type="text" id="descricao" placeholder="Descrição" required />
+      <input type="number" id="valor" placeholder="Valor (ex: 100.00)" required />
+      <select id="tipo">
+        <option value="renda">Renda</option>
+        <option value="despesa">Despesas</option>
+      </select>
+      <button type="submit">Adicionar</button>
+    </form>
+
+    <div class="renda-atual">
+        <h2>Entre com sua renda Atual</h2>
+        <input type="text" id="renda-atual" placeholder="Valor (ex: 100.00)">
+    </div>
+
+    <!-- Histórico -->
+    <div class="historico">
+      <h2>Histórico</h2>
+      <ul id="lista-transacoes"></ul>
+    </div>
+
+    <!-- Planejamentos -->
+    <div class="planejamento">
+      <h2>Planejamentos Futuros</h2>
+      <ul id="lista-planejados"></ul>
+      <form id="form-planejado">
+        <input type="text" id="descricao-planejado" placeholder="Meta ou fatura" required />
+        <input type="number" id="valor-planejado" placeholder="Valor futuro" required />
+        <button type="submit">Adicionar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
