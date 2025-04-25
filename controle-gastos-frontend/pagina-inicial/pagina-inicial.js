@@ -132,3 +132,21 @@ function saveTransacoes() {
 function savePlanejamentos() {
     localStorage.setItem('planejamentos', JSON.stringify(planejamentos));
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    const nomeSpan = document.getElementById('nomeUsuario');
+    const nome = localStorage.getItem('nomeUsuario');
+
+    if (nome) {
+        nomeSpan.textContent = nome;
+    } else {
+        nomeSpan.textContent = 'Usuário'; // fallback
+    }
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    const nome = localStorage.getItem('nomeUsuario');
+    if (!nome) {
+        window.location.href = '../login/login.html';
+    }
+});
