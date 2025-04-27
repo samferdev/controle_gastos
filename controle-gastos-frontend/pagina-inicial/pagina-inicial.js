@@ -150,3 +150,50 @@ window.addEventListener('DOMContentLoaded', () => {
         window.location.href = '../login/login.html';
     }
 });
+function toggleSidebar() {
+    const nav = document.querySelector('nav');
+    const main = document.querySelector('main');
+    const descriptions = document.querySelectorAll('.item-description');
+    
+    nav.style.transition = 'width 0.3s ease';
+    main.style.transition = 'margin-left 0.3s ease';
+    
+    descriptions.forEach(desc => {
+        desc.style.transition = 'opacity 0.15s ease';
+    });
+    
+    nav.classList.toggle('collapsed');
+    
+    if (nav.classList.contains('collapsed')) {
+        descriptions.forEach(desc => {
+            desc.style.opacity = '0';
+        });
+        
+        setTimeout(() => {
+            nav.style.width = '80px';
+            main.style.marginLeft = '80px';
+            descriptions.forEach(desc => {
+                desc.style.display = 'none';
+            });
+        }, 150);
+    } else {
+        nav.style.width = '240px';
+        main.style.marginLeft = '240px';
+        
+        setTimeout(() => {
+            descriptions.forEach(desc => {
+                desc.style.display = 'block';
+                setTimeout(() => {
+                    desc.style.opacity = '1';
+                }, 50);
+            });
+        }, 150);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const openBtn = document.getElementById('open-btn');
+    if (openBtn) {
+        openBtn.onclick = toggleSidebar;
+    }
+});

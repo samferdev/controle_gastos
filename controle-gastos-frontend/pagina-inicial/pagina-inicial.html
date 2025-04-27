@@ -2,53 +2,100 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Controle Financeiro Pessoal</title>
-  <link rel="stylesheet" href="../pagina-inicial/pagina-inicial.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciador Financeiro</title>
+  <link rel="stylesheet" href="../pagina-inicial/pagina-inicial.css">
 </head>
 
 <body>
-  <div class="container">
-    <h1>Controle Financeiro</h1>
-    <h2>Olá, seja bem-vindo(a) <span id="nomeUsuario"></span>!</h2>
+  <nav>
+    <div id="user">
+      <img src="../assets/logo.png" alt="Logo do Gerenciador Financeiro" id="logo-image" />
+      <div id="user-infos">
+        <span id="nomeUsuario"></span>
+      </div>
+    </div>
 
-         <!-- Saldo -->
-         <div class="saldo">
-            <h2>Saldo Atual: <span id="saldo">R$ 0,00</span></h2>
-          </div>
+    <ul id="side-items">
+      <li class="side-item">
+        <a href="#">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAZtJREFUSEvt1k8rRFEcxvHvo2QheQEUK6VoXgCKsmCtJEW8BK8Ar8BLQCHFnoWisBdKWVG8ADUWNn7umc6tO+OOe86dqdm4m9vM+fM5z7nnnHtFhy51yKUUbGau3SLQDRxKstgA0bBHj4Aljx0Dy7F4FJyDpkGj8WDYo/vAitde/X3I3w+A1dDkQXBO0ndgwoO3wEDstBfCzVBJtcRm5hJH43/CRWj6gMvgTeFQtCyeC8eiZfBfcFk0Fs+Dd4E139EbMJkupNDTyT/zG2DQt9lL+ljPtq+DzawC3LWCNiTP4hVJ92l5IzwNXPrCeUnnoSnz6pnZHHDmy2YkXYXAdRXLDMDMskHKwWbWC2wAU0BPw0C+gGtgR9JnZrrbAp8CCwXJTyS512XtalfiKuBSu6PypWEAw4A7OquS+toNpy/7bUlbWdjM3O9N95+Swn+4pe1kyXz6Dv6n2m2blhfXWLJXH8qcUgFtxiU9Njsyu4AnYCSgo5gqz8CopO9c2J82/cAs4NIXfpMV6G5BupQXkj6ydVvtOCZ1Xd2OwT9eKjsuXf8OkAAAAABJRU5ErkJggg=="
+            alt="Ícone Página Inicial" />
+          <span class="item-description">Página Inicial</span>
+        </a>
+      </li>
+      <li class="side-item">
+        <a href="#">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAutJREFUSEvlllvITlkYx39/TeScUZJGQhqnC8dRphwuHC7kRqkpipRDTlcSKZRpiquh+ULKITdC4QIjSQoXcig1o1y4ERcoZxcO/9mP1s7+Xvvd7/6+G01WvfW29n+t33NY63mW+EZD34jL/w9suy/wE9AHeAg8kvSxbgQ75LHt8cCC9BvZAHkHnANOAmckva4yohY4eXcEmF/ToxfAb5LCkNLREmx7AnACGFrY4RZwFrgPPAYGAYOz/ytS+HPpLmBTWQoqwbZHADeB3mmnM8AWSXfL3LDdFVgF7AB6Jc1eSTHXbjQF2+4J3AYC/glYK6mtTqhtTwH+BuIAxlgs6WhxbRV4J7AhiZdIOlwHmmtsjwMuAf2AV8BwSU/y76Vg23FNHmQh+wG4LGlmk9A6zW+XtK1RY3tZlvMDaX6PpHWtwCH4M4lmSbrYSXC3uN/Aj8BTYICkz8Y28zhCFF6+lRS5Lh22Kz2ORbZ/BzanDaZKul4FfpasvCJpeg1w5P9QQXdH0vMEHgX8k76tkLS/Chylr0sWmrbsQKyuAW6UzJR0OYGjpEZBibFRUhzaL6G2PTqrTFEYIi+N47CkJSWHJw91FThqwMskWCPpr688th2bH2zY5V9gkqS3JeAZTaJRDPXPwL2kmyPpQmmobR/LcrIwCQM2WVKeo2ZRbzpvezmwLwmGSYpr+vWptt0jlcnoPkslFQ9NZ8BRwWbHAZM0Jt+g2XWKfK+TtLLDpMIC21OBq2mqXfVr2Z06C7bdHbgBhJfRwYZIel/pcckh+jVrjWMl5bmqtCeV3FPAxCRcmIX5eHFRS49tRwGJ3hu5j7YY/bX0sNmOqxg9eWsqQMFaL2l3o6V1wL8kcP/C4ujRYcS1rD9/AAYC89ILJe/dIf9DUl4u27FbgkNtewgQT59pNXN+J9Ntk3S6mb4WOF9sey6wKBkQT53ieANEXo9KOt/KwA6Bi5ulB2DA44mTP2/jpVJrdBpca/cK0fcH/g8r4gAuror9/AAAAABJRU5ErkJggg=="
+            alt="Ícone Histórico" />
+          <span class="item-description">Histórico</span>
+        </a>
+      </li>
+      <li class="side-item">
+        <a href="#">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAUZJREFUSEvtlztOxDAQhr+fipaShmdNQ0MJnIECCcTjBBwB2D0JiIcQlwBOQAMdSFBziCEj2VEwyaaxlS3WnT2e+Zw/nslEDDQ0EJfpAZvZMrCaWYl3ST/NmPUTm9kccA/sZ4bGcGNJF3HSBB8Ad4WgMeyGpDefNMHn1XxUGHwoyVX9A74EaikKHeBY0s0k8EsLeDusfQNfiX0F8EvpI/WdB7aC7UjSbSdY0r80MzMLzqPK7OrUozLVaqW+ZrYOfITNk594BnaZZlIXuVyFctjD9uZxKXYvuK10xqrmBeI5OdkOEAtM6rsAnA1RQNaAzyEKyAzc/XXKXKt7pW42Arst+fQU1q6Bq8R+CpyEtdR3MbRUbm5tBLzXeiiVwCHupqTX9Hvszd4jsFcI3t7sRZiZ+TtZygzvbm8zg3rDTc+fRO9RM234Bbr8Ey63BvQnAAAAAElFTkSuQmCC"
+            alt="Ícone Planejamentos" />
+          <span class="item-description">Planejamentos</span>
+        </a>
+      </li>
+    </ul>
 
-    <form id="form-transacao">
-      <input type="text" id="descricao" placeholder="Descrição" required />
-      <input type="number" id="valor" placeholder="Valor (ex: 100.00)" required />
-      <select id="tipo">
-        <option value="renda">Renda</option>
-        <option value="despesa">Despesas</option>
-      </select>
-      <button type="submit">Adicionar</button>
-    </form>
+    <button id="open-btn">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAVJJREFUSEvtlb0uRGEQhp83CFFwCRrhIiT+Eg2VyjZEo1OJVqNVqnR+G5Eo3IToEOIeJISeV0Y+yYaze74jm12JPeXMZJ7Me755R3ToU4e4dMFtU74r9Q+pbQ9Jev2eaBTP/VdNpbY9DxwB05Juv5raHgEugU1JJ7mw+rqGYNujwDUwCDwBM5JubPcA98AYYGBV0mFVeDNw5PaBldQ04J+T245Y5KLmPWqqTl4mdeT3gLU6+ISkB9s14BgIBQK+JOksd/KsdbK9C6ynpo/AZIIvAqdAL/AG1HLhWeAA2t6Jx1QAXwDOgb4q8Gxwgm8B2wXwOeAC6M+F/31wR6Ru++Oy3f51StD2G0iyzPDnAeAZmEquFYZxB4wny1yu6lqxFWXOFUfiAJgtOBJXwMZvoKXgtLvDkl4KzmJhvKWWmdusSl0lA6nSuKy2Cy5TqGX5/yf1B9EFtB9DAaJ4AAAAAElFTkSuQmCC" alt="Ícone Menu" />
+    </button>
 
-    <div class="renda-atual">
+    <div id="logout">
+      <button id="logout-btn">
+        <img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAWZJREFUSEvtlr0uBVEUhb8lohaJAi+gQCQaHR5BoURF6CRXofPzCEgkoqNUCI3G3xvQKBSEJ/AGyxyZSa7rYs6Je2/EPeXMnvn2rLX3ni1adNQiLn8HbDskOwz0RKj1JOm5Oj7qi20PAOfAUAS0CD0E5iU5XIgF7wMLCdDikWlJJyngS2AKuANWIhK4ymPXJW2lgK+BiQx+I2myLNj2u7yZwpuSNtrgT8rZ7gUqktbCTduNl9r2GHAGPBR+2h4FurPCepV0++se254FDoCu2EKql8yPxWW7M5tI28By1QuiWidTJ9jx4XwLzv08zSbTeFkJ68Up65dYcF/uafA2+USD86oNnu7WjMXGSl39ibYXgZ2mFVcNPHgdPL9vWjsVCdgOvq9KqjRtgHzRj42fXG1w7nHLFoE9YCl5usCMpOOURaAfuAAGE+BHwFzSspfL3QGM5L/HsvxHSS/VwVFbZllKmbj/B34DM5zgH/7cPvIAAAAASUVORK5CYII="
+          alt="Ícone Sair" />
+        <span class="item-description">Sair</span>
+      </button>
+    </div>
+  </nav>
+
+  <div id="app-container">
+    <main>
+      <section class="saldo">
+        <h2>Saldo Atual: <span id="saldo">R$ 0,00</span></h2>
+      </section>
+
+      <section class="transacao">
+        <form id="form-transacao">
+          <input type="text" id="descricao" placeholder="Descrição" required />
+          <input type="number" id="valor" placeholder="Valor (ex: 100.00)" required />
+          <select id="tipo">
+            <option value="renda">Renda</option>
+            <option value="despesa">Despesas</option>
+          </select>
+          <button type="submit">Adicionar</button>
+        </form>
+      </section>
+
+      <section class="renda-atual">
         <h2>Entre com sua renda Atual</h2>
         <input type="text" id="renda-atual" placeholder="Valor (ex: 100.00)">
-    </div>
+      </section>
 
-    <!-- Histórico -->
-    <div class="historico">
-      <h2>Histórico</h2>
-      <ul id="lista-transacoes"></ul>
-    </div>
+      <section class="historico">
+        <h2>Histórico</h2>
+        <ul id="lista-transacoes"></ul>
+      </section>
 
-    <!-- Planejamentos -->
-    <div class="planejamento">
-      <h2>Planejamentos Futuros</h2>
-      <ul id="lista-planejados"></ul>
-      <form id="form-planejado">
-        <input type="text" id="descricao-planejado" placeholder="Meta ou fatura" required />
-        <input type="number" id="valor-planejado" placeholder="Valor futuro" required />
-        <button type="submit">Adicionar</button>
-      </form>
-    </div>
+      <section class="planejamento">
+        <h2>Planejamentos Futuros</h2>
+        <ul id="lista-planejados"></ul>
+        <form id="form-planejado">
+          <input type="text" id="descricao-planejado" placeholder="Meta ou fatura" required />
+          <input type="number" id="valor-planejado" placeholder="Valor futuro" required />
+          <button type="submit">Adicionar</button>
+        </form>
+      </section>
+    </main>
   </div>
 
   <script src="../pagina-inicial/pagina-inicial.js"></script>
