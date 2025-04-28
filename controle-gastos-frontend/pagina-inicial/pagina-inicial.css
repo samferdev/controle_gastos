@@ -2,6 +2,8 @@
 nav {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   background-color: #0f0f0f;
   padding: 0;
   width: 240px;
@@ -9,7 +11,7 @@ nav {
   position: fixed;
   top: 0;
   left: 0;
-  overflow-y: auto;
+  overflow-y: hidden;
   transition: width 0.2s ease;
 }
 
@@ -17,8 +19,8 @@ nav {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 16px;
-  gap: 12px;
+  padding: 16px 12px;
+  gap: 8px;
   justify-content: center;
   border-bottom: 1px solid #272727;
   position: relative;
@@ -26,8 +28,8 @@ nav {
 }
 
 #logo-image {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   object-fit: cover;
   border-radius: 8px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -47,14 +49,14 @@ nav {
 #nomeUsuario {
   font-weight: 500;
   color: white;
-  font-size: 1rem;
+  font-size: 0.9rem;
   text-align: center;
   transition: opacity 0.2s ease;
 }
 
 #side-items {
   list-style: none;
-  padding: 12px 0;
+  padding: 8px 0;
   margin: 0;
   width: 100%;
   display: flex;
@@ -63,6 +65,9 @@ nav {
   gap: 2px;
   transition: all 0.2s ease;
   align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(100vh - 140px);
 }
 
 .side-item {
@@ -70,6 +75,9 @@ nav {
   display: flex;
   justify-content: center;
   transition: all 0.2s ease;
+  padding: 2px 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .side-item a {
@@ -78,20 +86,22 @@ nav {
   align-items: center;
   text-decoration: none;
   color: white;
-  padding: 8px 12px;
-  transition: all 0.2s ease;
-  gap: 12px;
+  padding: 4px 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 8px;
   justify-content: flex-start;
-  width: calc(100% - 16px);
+  width: 100%;
+  box-sizing: border-box;
   border-radius: 8px;
-  margin: 0 8px;
+  margin: 0;
   background: transparent;
-  min-height: 40px;
+  min-height: 32px;
+  overflow-x: hidden;
 }
 
 .side-item img {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
   transition: all 0.2s ease;
   transform: translateX(0);
@@ -99,16 +109,18 @@ nav {
 }
 
 .side-item .item-description {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: white;
   display: block;
   text-align: left;
-  transition: opacity 0.1s ease, transform 0.1s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 1;
-  transform: translateX(0);
   white-space: nowrap;
   overflow: hidden;
   font-weight: 400;
+  width: 110px;
+  margin-left: 8px;
+  box-sizing: border-box;
 }
 
 #open-btn {
@@ -147,22 +159,25 @@ nav {
 
 #logout {
   margin-top: auto;
-  padding: 16px;
+  padding: 8px;
   border-top: 1px solid #272727;
   display: flex;
   justify-content: center;
+  position: sticky;
+  bottom: 0;
+  background-color: #0f0f0f;
 }
 
 #logout-btn {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   background: none;
   border: none;
   color: white;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   cursor: pointer;
-  padding: 12px 16px;
+  padding: 8px 12px;
   width: 100%;
   justify-content: flex-start;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -176,8 +191,8 @@ nav {
 }
 
 #logout-btn img {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   transition: transform 0.2s ease;
 }
@@ -318,15 +333,11 @@ nav.collapsed #user-infos {
 }
 
 nav.collapsed .side-item a {
+  padding: 4px 0;
+  width: 40px;
   justify-content: center;
-  padding: 8px 0;
-  margin: 0;
   gap: 0;
-  width: 100%;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 nav.collapsed .side-item img {
@@ -339,10 +350,9 @@ nav.collapsed .side-item img {
 
 nav.collapsed .side-item .item-description {
   opacity: 0;
-  transform: translateX(-10px);
   width: 0;
-  visibility: hidden;
-  transition: opacity 0.1s ease, transform 0.1s ease, width 0.1s ease;
+  margin-left: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* When sidebar is expanded */
@@ -369,25 +379,17 @@ nav:not(.collapsed) .side-item .item-description {
 
 /* Hover effects */
 .side-item a:hover {
-  background-color: #272727;
+  background-color: #232323;
+  color: #b6ffb6;
 }
 
-nav:not(.collapsed) .side-item a:hover {
-  transform: translateX(4px);
-}
-
-nav:not(.collapsed) .side-item a:hover img {
-  transform: scale(1.05);
+.side-item a:hover img {
   opacity: 1;
+  transform: scale(1.08);
 }
 
-nav.collapsed .side-item a:hover {
-  transform: none;
-}
-
-nav.collapsed .side-item a:hover img {
-  transform: scale(1.05);
-  opacity: 1;
+.side-item a:hover .item-description {
+  color: #b6ffb6;
 }
 
 /* Active state */
@@ -404,7 +406,7 @@ nav:not(.collapsed) .side-item a.active {
   transform: translateX(4px);
 }
 
-nav.collapsed + #app-container main {
+nav.collapsed+#app-container main {
   margin-left: 80px;
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -503,98 +505,91 @@ nav.collapsed .side-item img {
     z-index: 1000;
     padding: 0;
     border-top: 1px solid #272727;
-  }
-
-  nav.collapsed {
-    width: 100%;
+    flex-direction: row;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   #side-items {
     flex-direction: row;
-    padding: 8px;
+    padding: 8px 0;
     gap: 0;
     justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .side-item {
     width: auto;
+    padding: 0 2px;
+    flex: 1 1 0;
+    justify-content: center;
   }
 
   .side-item a {
     flex-direction: column;
-    padding: 8px;
-    gap: 4px;
-    width: auto;
-    min-height: auto;
+    padding: 6px 2px;
+    gap: 2px;
+    width: 100%;
+    min-width: 60px;
+    min-height: 44px;
+    font-size: 0.8rem;
+    border-radius: 8px;
     margin: 0;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .side-item img {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
   }
 
   .side-item .item-description {
     font-size: 0.7rem;
+    margin-left: 0;
+    width: auto;
     text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  #user {
-    display: none;
-  }
-
-  #open-btn {
-    display: none;
-  }
-
+  #user,
+  #open-btn,
   #logout {
-    display: none;
+    display: none !important;
   }
 
   main {
     margin-left: 0;
     margin-bottom: 60px;
-    padding: 16px;
-  }
-
-  /* Form Styles */
-  form {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  input, select, button {
-    width: 100%;
-    padding: 8px;
-    font-size: 0.9rem;
-  }
-
-  input, select {
-    flex: none;
-  }
-
-  button {
-    flex: none;
-    padding: 10px;
-  }
-
-  /* List Styles */
-  ul {
-    padding: 0;
-  }
-
-  ul li {
-    padding: 8px;
-    font-size: 0.9rem;
-  }
-
-  /* Section Styles */
-  .saldo, .renda-atual, .historico, .planejamento {
     padding: 12px;
+    transition: margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .side-item a {
+    min-width: 44px;
+    min-height: 36px;
+    font-size: 0.7rem;
+    padding: 4px 0;
   }
 
-  h2 {
-    font-size: 1.2rem;
+  .side-item img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .side-item .item-description {
+    font-size: 0.6rem;
+  }
+
+  main {
+    margin-bottom: 50px;
+    padding: 8px;
   }
 }
 
@@ -612,7 +607,7 @@ nav.collapsed .side-item img {
     margin-left: 200px;
   }
 
-  nav.collapsed + main {
+  nav.collapsed+main {
     margin-left: 80px;
   }
 
@@ -654,8 +649,63 @@ nav.collapsed .side-item img {
     padding: 12px;
   }
 
-  input, select, button {
+  input,
+  select,
+  button {
     padding: 6px;
     font-size: 0.8rem;
   }
+}
+
+/* Styling for Gastos Previstos Section */
+.gastos-previstos {
+  background-color: #222;
+  /* Match the background of other sections */
+  padding: 20px;
+  /* Consistent padding */
+  border-radius: 12px;
+  /* Rounded corners */
+  margin-top: 20px;
+  /* Add spacing between sections */
+}
+
+.gastos-previstos h2 {
+  color: white;
+  /* Ensure the heading is visible */
+  margin-bottom: 10px;
+}
+
+.gastos-previstos ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.gastos-previstos li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #2a2a2a;
+  /* Match the list item background */
+  border-left: 6px solid #006400;
+  /* Green border for visual distinction */
+  margin-bottom: 8px;
+  border-radius: 6px;
+}
+
+.gastos-previstos button {
+  background-color: #ff4d4d;
+  /* Red button for removal */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.gastos-previstos button:hover {
+  background-color: #cc0000;
+  /* Darker red on hover */
 }
