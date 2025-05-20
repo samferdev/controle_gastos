@@ -1,28 +1,3 @@
-// Funções do Planejamento
-export const planejamentoTemplate = `
-  <section class="planejamento">
-    <h2>Planejamentos Futuros</h2>
-    <div class="novo-planejamento">
-      <form id="form-planejado">
-        <input type="text" id="descricao-planejado" placeholder="Meta ou fatura" required />
-        <input type="number" id="valor-planejado" placeholder="Valor futuro" required />
-        <button type="submit">Adicionar</button>
-      </form>
-    </div>
-    <div class="filtros-planejamento">
-      <input type="date" id="filtro-data-inicio" />
-      <input type="date" id="filtro-data-fim" />
-    </div>
-    <ul id="lista-planejados"></ul>
-    <div class="resumo-planejamento">
-      <h3>Resumo</h3>
-      <p>Total Planejado: <span id="total-planejado">R$ 0,00</span></p>
-      <p>Saldo Atual: <span id="saldo-atual">R$ 0,00</span></p>
-      <p>Diferença: <span id="diferenca">R$ 0,00</span></p>
-    </div>
-  </section>
-`;
-
 export function initializePlanejamento() {
   const formPlanejado = document.getElementById('form-planejado');
   const filtroDataInicio = document.getElementById('filtro-data-inicio');
@@ -158,7 +133,7 @@ function removerPlanejamento(id) {
   const planejamentos = JSON.parse(localStorage.getItem('planejamentos')) || [];
   const novosPlanejamentos = planejamentos.filter((p) => p.id !== id);
   localStorage.setItem('planejamentos', JSON.stringify(novosPlanejamentos));
-  
+
   // Atualizar todas as listas de planejamentos na página
   const listasPlanejados = document.querySelectorAll('#lista-planejados');
   listasPlanejados.forEach(lista => {
@@ -169,7 +144,7 @@ function removerPlanejamento(id) {
       }
     }
   });
-  
+
   updateResumo();
 }
 
@@ -181,24 +156,3 @@ export { removerPlanejamento };
 export function initPlanejamento() {
   initializePlanejamento();
 }
-
-// Removendo o event listener duplicado
-// const formPlanejado = document.getElementById('form-planejado');
-// const listaPlanejados = document.getElementById('lista-planejados');
-
-// formPlanejado.addEventListener('submit', (event) => {
-//   event.preventDefault(); // Prevent the default form submission behavior
-
-//   const descricao = document.getElementById('descricao-planejado').value;
-//   const valor = document.getElementById('valor-planejado').value;
-
-//   if (descricao && valor) {
-//     const li = document.createElement('li');
-//     li.textContent = `${descricao}: R$ ${parseFloat(valor).toFixed(2)}`;
-//     listaPlanejados.appendChild(li);
-
-//     // Clear the form inputs
-//     document.getElementById('descricao-planejado').value = '';
-//     document.getElementById('valor-planejado').value = '';
-//   }
-// });   

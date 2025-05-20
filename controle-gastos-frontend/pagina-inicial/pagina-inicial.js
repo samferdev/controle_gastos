@@ -1,48 +1,51 @@
-// DOM Elements
+"use strict";
+// DOM Elements - Pegando elementos do HTML com tipagem adequada
 const formTransacao = document.getElementById('form-transacao');
 const listaTransacoes = document.getElementById('lista-transacoes');
 const saldoElement = document.getElementById('saldo');
 const rendaAtualInput = document.getElementById('renda-atual');
-
-// State
+// Estado - Variáveis para armazenar as transações e a renda atual
 let transacoes = [];
 let rendaAtual = 0;
-
+// Recupera dados do localStorage e evita erros na leitura
 try {
-    transacoes = JSON.parse(localStorage.getItem('transacoes')) || [];
-} catch (e) {
-    console.error('Error parsing transacoes from localStorage:', e);
+    const transacoesSalvas = localStorage.getItem('transacoes');
+    transacoes = transacoesSalvas ? JSON.parse(transacoesSalvas) : [];
 }
-
+catch (e) {
+    console.error('Erro ao carregar transações:', e);
+}
 try {
-    rendaAtual = parseFloat(localStorage.getItem('rendaAtual')) || 0;
-} catch (e) {
-    console.error('Error parsing rendaAtual from localStorage:', e);
+    const rendaSalva = localStorage.getItem('rendaAtual');
+    rendaAtual = rendaSalva ? parseFloat(rendaSalva) : 0;
 }
-
-// Initialize
+catch (e) {
+    console.error('Erro ao carregar rendaAtual:', e);
+}
+// Inicialização da interface com os valores corretos
 updateSaldo();
 updateListaTransacoes();
-if (rendaAtual > 0) {
+if (rendaAtual > 0 && rendaAtualInput) {
     rendaAtualInput.value = rendaAtual.toFixed(2);
 }
-
-// Event Listeners
+// Eventos
 if (formTransacao) {
     formTransacao.addEventListener('submit', (e) => {
         e.preventDefault();
         const descricao = document.getElementById('descricao').value;
         const valor = parseFloat(document.getElementById('valor').value);
         const tipo = document.getElementById('tipo').value;
-
+        if (isNaN(valor) || valor <= 0) {
+            alert('Insira um valor válido.');
+            return;
+        }
         const transacao = {
             id: Date.now(),
             descricao,
             valor,
             tipo,
-            data: new Date().toLocaleDateString()
+            data: new Date().toLocaleDateString(),
         };
-
         transacoes.push(transacao);
         saveTransacoes();
         updateSaldo();
@@ -50,34 +53,30 @@ if (formTransacao) {
         formTransacao.reset();
     });
 }
-
 if (rendaAtualInput) {
     rendaAtualInput.addEventListener('change', (e) => {
         rendaAtual = parseFloat(e.target.value) || 0;
-        localStorage.setItem('rendaAtual', rendaAtual);
+        localStorage.setItem('rendaAtual', rendaAtual.toString());
         updateSaldo();
     });
 }
-
-// Functions
+// Função para atualizar o saldo
 function updateSaldo() {
-    if (!saldoElement) return;
-
+    if (!saldoElement)
+        return;
     const totalDespesas = transacoes
         .filter(t => t.tipo === 'despesa')
         .reduce((sum, t) => sum + t.valor, 0);
-
     const totalRenda = transacoes
         .filter(t => t.tipo === 'renda')
         .reduce((sum, t) => sum + t.valor, 0);
-
     const saldo = rendaAtual + totalRenda - totalDespesas;
     saldoElement.textContent = `R$ ${saldo.toFixed(2)}`;
 }
-
+// Atualiza a lista de transações na tela
 function updateListaTransacoes() {
-    if (!listaTransacoes) return;
-
+    if (!listaTransacoes)
+        return;
     listaTransacoes.innerHTML = '';
     transacoes.forEach(transacao => {
         const li = document.createElement('li');
@@ -93,14 +92,14 @@ function updateListaTransacoes() {
         listaTransacoes.appendChild(li);
     });
 }
-
+// Função para remover uma transação
 function removerTransacao(id) {
     transacoes = transacoes.filter(t => t.id !== id);
     saveTransacoes();
     updateSaldo();
     updateListaTransacoes();
 }
-
+// Salva as transações no localStorage e verifica autenticação
 function saveTransacoes() {
     const nome = localStorage.getItem('nomeUsuario');
     if (!nome) {
@@ -109,154 +108,5 @@ function saveTransacoes() {
     }
     localStorage.setItem('transacoes', JSON.stringify(transacoes));
 }
-
-
-// Make functions globally available
+// Expondo a função global para o HTML
 window.removerTransacao = removerTransacao;
-
-document.addEventListener('DOMContentLoaded', () => {
-    const nomeSpan = document.getElementById('nomeUsuario');
-    if (nomeSpan) {
-        const nome = localStorage.getItem('nomeUsuario');
-        nomeSpan.textContent = nome || 'Usuário';
-    }
-
-    const nome = localStorage.getItem('nomeUsuario');
-    if (!nome) {
-        window.location.href = '../login/login.html';
-    }
-
-    const openBtn = document.getElementById('open-btn');
-    if (openBtn) {
-        openBtn.onclick = toggleSidebar;
-    }
-
-    // SPA Navigation
-    const main = document.querySelector('main');
-    const homeBtn = document.getElementById('side-home');
-    const historicoBtn = document.getElementById('side-historico');
-    const planejamentoBtn = document.getElementById('side-planejamento');
-
-    if (homeBtn) {
-        homeBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            main.innerHTML = homeTemplate;
-            const module = await import('./home.js');
-            module.initHome();
-        });
-    }
-
-    if (historicoBtn) {
-        historicoBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            main.innerHTML = historicoTemplate;
-            const module = await import('./historico.js');
-            module.initHistorico();
-        });
-    }
-
-    if (planejamentoBtn) {
-        planejamentoBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            main.innerHTML = planejamentoTemplate;
-            const module = await import('./planejamento.js');
-            module.initPlanejamento();
-        });
-    }
-
-    // Render home initially
-    if (main) {
-        main.innerHTML = homeTemplate;
-        import('./home.js').then(module => module.initHome());
-    }
-});
-
-function toggleSidebar() {
-    const nav = document.querySelector('nav');
-    const main = document.querySelector('main');
-    const descriptions = document.querySelectorAll('.item-description');
-
-    if (!nav || !main) return;
-
-    nav.style.transition = 'width 0.3s ease';
-    main.style.transition = 'margin-left 0.3s ease';
-
-    descriptions.forEach(desc => {
-        desc.style.transition = 'opacity 0.15s ease';
-    });
-
-    nav.classList.toggle('collapsed');
-
-    if (nav.classList.contains('collapsed')) {
-        descriptions.forEach(desc => {
-            desc.style.opacity = '0';
-        });
-
-        setTimeout(() => {
-            nav.style.width = '80px';
-            main.style.marginLeft = '80px';
-            descriptions.forEach(desc => {
-                desc.style.display = 'none';
-            });
-        }, 150);
-    } else {
-        nav.style.width = '240px';
-        main.style.marginLeft = '240px';
-
-        setTimeout(() => {
-            descriptions.forEach(desc => {
-                desc.style.display = 'block';
-                setTimeout(() => {
-                    desc.style.opacity = '1';
-                }, 50);
-            });
-        }, 150);
-    }
-}
-
-// Templates
-const homeTemplate = `
-  <section class="saldo">
-    <h2>Saldo Atual: <span id="saldo">R$ 0,00</span></h2>
-  </section>
-  <section class="transacao">
-    <form id="form-transacao">
-      <input type="text" id="descricao" placeholder="Descrição" required />
-      <input type="number" id="valor" placeholder="Valor (ex: 100.00)" required />
-      <select id="tipo">
-        <option value="renda">Renda</option>
-        <option value="despesa">Despesas</option>
-      </select>
-      <button type="submit">Adicionar</button>
-    </form>
-  </section>
-  <section class="renda-atual">
-    <h2>Entre com sua renda Atual</h2>
-    <input type="text" id="renda-atual" placeholder="Valor (ex: 100.00)">
-  </section>
-`;
-
-const historicoTemplate = `
-  <section class="historico">
-    <h2>Histórico</h2>
-    <ul id="lista-transacoes"></ul>
-  </section>
-`;
-
-const planejamentoTemplate = `
-  <section class="planejamento">
-    <h2>Planejamentos Futuros</h2>
-    <div class="novo-planejamento">
-      <form id="form-planejado">
-        <input type="text" id="descricao-planejado" placeholder="Meta ou fatura" required />
-        <input type="number" id="valor-planejado" placeholder="Valor futuro" required />
-        <button type="submit">Adicionar</button>
-      </form>
-    </div>
-    <ul id="lista-planejados"></ul>
-  </section>
-`;
-
-// Ensure this file contains the necessary imports and logic for other sections
-
-// Handle form submission for "Planejamentos Futuros"

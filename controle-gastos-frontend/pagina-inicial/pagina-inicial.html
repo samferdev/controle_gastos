@@ -45,7 +45,7 @@
       </li>
 
       <li class="side-item">
-        <a href="#gastos-previstos" id="side-gastos-previstos">
+        <a href="#" id="side-gastos-previstos">
           <img
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAyhJREFUSEvFllmIjmEUx39/S5aihIhSbiylLCUXlKWUFBcuLMkSJYWLGdMw9inbaGzlwgWKJOGCxI2ylZQQRcqFiNyYi7FkyXK8Zzzv9Mw777cNmae+vud9lvM/y/+c84hOGuokXDoMbGZTgKHAOUlWqQEVA5vZCOAgMDuAPQHWSrpVCXjZwGY2ENgJrAS65oBcAaolPS9HgZLAZtYLqA2/3kHod2BfmNcAPcL8F3AM2CLpXTEFCgKbme8tBXYDQyIhd4FFkl75mpn53h5gCbRy5nNYa5T0NU+BXGAzmwocAcbkXPoJnAA2x1aZ2WjgADAruvPGrQdOZQnYBjiHOC7DSbMGmJFYVA/0C4I/BXe7VV9SsKD0IWBcpEA7ArYCm9nEhKn3osMvgSpJFyOh/YPrV0Xn3gKbYqtCmBYDuxLvDIvOLpd00r9j4B1JyLZHhzyGW4HTWTeZmVvjoZgcnX8cWH3dzLoAy5I9lxkD10vytaLAqcxWgdl4m5kL3wsMjvYuASOBUTn8KAnsLlqfCO0ZXb4K1Eh6Fgs0M08xd/WGJM+7ZcA+BsKlniwOLPet2aBQMFYA7rqW7AGOe0gkeWw9nQYA24DVSUy7R8CXPR0lNZtZWlJLA0eEcpd5sZgTCf0G7E8AvWC4Z7zIZEcrSIeAIwUmJal0GPD/vHEfqEsIdy1s/hvgSIF5IaWcQD68NnuRuPAnQu3d+lcWZwg1DbgR1qZLuhkp5vF0Unl8W2rA/wL2DubVrDmjjH+WTKeNngaSvAu1G2ZW0OKMZ7xrVYWGURB4QZL0Z6OLL0Il8oLQZpQDbGbOhUZgeHR5vqTz/p1tEuPD68K7Uzo8luskPY1cVyzGYwP7Yxm3gxEPUhmF2uLckLspcz1fvRXWSWrKszgUEu/LccFxxtdKaue1Yg8BL3/ehbyo+7PHx4fQcR5G+ToTmBBSqk841xRa6FFJP/J4Us7Tpy/gZKuOnjiugK+nyqRzJ6PHtUHS+zzAoq4uwGR/4jQA3mezCnvungmheF0MsGLgiFjZXnwnPG8flQPYYeBIgYUtaSHFKVg2dskYly2pwoOdBvwb0T5dLqxDjFIAAAAASUVORK5CYII="
             alt="Ícone Gastos Previstos" />
@@ -94,10 +94,12 @@
         <input type="text" id="renda-atual" placeholder="Valor (ex: 100.00)">
       </section>
 
+      <!--
       <section class="historico">
         <h2>Histórico</h2>
         <ul id="lista-transacoes"></ul>
       </section>
+      -->
 
       <section class="planejamento">
         <h2>Planejamentos Futuros</h2>
@@ -109,24 +111,31 @@
         </form>
       </section>
 
-      <section id="gastos-previstos" class="gastos-previstos">
+
+      <section class="gastos-previstos">
         <h2>Gastos Previstos</h2>
-        <ul id="lista-gastos-previstos"></ul>
-        <form id="form-gastos-previstos">
-          <input type="text" id="descricao-gastos-previstos" placeholder="Descrição do gasto" required />
-          <input type="number" id="valor-gastos-previstos" placeholder="Valor estimado (ex: 200.00)" required />
-          <button type="submit">Adicionar Gasto</button>
-        </form>
+        <div class="novo-gasto">
+          <form id="form-planejado">
+            <input type="text" id="descricao-planejado" placeholder="Gasto previsto" required />
+            <input type="number" id="valor-planejado" placeholder="Valor futuro" required />
+            <button id="adicionar-gastos-btn" type="submit">Adicionar</button>
+          </form>
+        </div>
+        <ul id="lista-planejados">
+
+        </ul>
       </section>
+
+
     </main>
   </div>
 
-  <script type="module" src="gastos-previstos.js"></script>
-  <script type="module" src="./pagina-inicial.js"></script>
+  <script type="module" src="./pagina-inicial.ts"></script>
   <script type="module" src="../utils/auth.js"></script>
   <script type="module" src="./home.js"></script>
   <script type="module" src="./historico.js"></script>
   <script type="module" src="./planejamento.js"></script>
+  <script type="module" src="./gastos-previstos.js"></script>
 
 </body>
 
