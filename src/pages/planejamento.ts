@@ -1,7 +1,20 @@
+type Planejamento = {
+  id: number;
+  descricao: string;
+  valor: number;
+  data: string;
+};
+
+type Transacao = {
+  tipo: 'renda' | 'despesa';
+  valor: number;
+};
+
 export function initializePlanejamento() {
-  const formPlanejado = document.getElementById('form-planejado');
-  const filtroDataInicio = document.getElementById('filtro-data-inicio');
-  const filtroDataFim = document.getElementById('filtro-data-fim');
+  const formPlanejado = document.getElementById('form-planejado') as HTMLFormElement | null;
+  const filtroDataInicio = document.getElementById('filtro-data-inicio') as HTMLInputElement | null;
+  const filtroDataFim = document.getElementById('filtro-data-fim') as HTMLInputElement | null;
+  const listaPlanejados = document.getElementById('lista-planejados') as HTMLUListElement | null;
 
   if (formPlanejado) {
     formPlanejado.addEventListener('submit', handlePlanejadoSubmit);
@@ -15,72 +28,67 @@ export function initializePlanejamento() {
     filtroDataFim.addEventListener('change', updateListaPlanejados);
   }
 
+  // Event delegation for remove buttons
+  if (listaPlanejados) {
+    listaPlanejados.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'BUTTON' && target.dataset.id) {
+        removerPlanejamento(Number(target.dataset.id));
+      }
+    });
+  }
+
   updateListaPlanejados();
   updateResumo();
 }
 
-function handlePlanejadoSubmit(event) {
+function handlePlanejadoSubmit(event: Event) {
   event.preventDefault();
 
-  const descricao = document.getElementById('descricao-planejado').value.trim();
-  const valor = parseFloat(document.getElementById('valor-planejado').value);
+  const descricaoInput = document.getElementById('descricao-planejado') as HTMLInputElement | null;
+  const valorInput = document.getElementById('valor-planejado') as HTMLInputElement | null;
+
+  const descricao = descricaoInput?.value.trim() ?? '';
+  const valor = parseFloat(valorInput?.value ?? '');
 
   if (!descricao || isNaN(valor)) {
     alert('Preencha todos os campos corretamente.');
     return;
   }
 
-  const planejamento = {
+  const planejamento: Planejamento = {
     id: Date.now(),
     descricao,
     valor,
     data: new Date().toLocaleDateString(),
   };
 
-  const planejamentos = JSON.parse(localStorage.getItem('planejamentos')) || [];
+  const planejamentos: Planejamento[] = JSON.parse(localStorage.getItem('planejamentos') ?? '[]');
   planejamentos.push(planejamento);
   localStorage.setItem('planejamentos', JSON.stringify(planejamentos));
 
-  // Atualizar a lista em todas as seções
-  const listasPlanejados = document.querySelectorAll('#lista-planejados');
-  listasPlanejados.forEach(lista => {
-    if (lista) {
-      const li = document.createElement('li');
-      li.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 0;">
-          <div style="flex: 2; margin-right: 15px;">${planejamento.descricao}</div>
-          <div style="flex: 1; text-align: right; margin-right: 15px;">R$ ${planejamento.valor.toFixed(2)}</div>
-          <div style="flex: 1; text-align: center; margin-right: 15px;">${planejamento.data}</div>
-          <button onclick="removerPlanejamento(${planejamento.id})" style="background-color: #cc0000; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 12px;">X</button>
-        </div>
-      `;
-      lista.appendChild(li);
-    }
-  });
-
+  updateListaPlanejados();
   updateResumo();
-  event.target.reset();
+  (event.target as HTMLFormElement).reset();
 }
 
 function updateListaPlanejados() {
-  const listaPlanejados = document.getElementById('lista-planejados');
+  const listaPlanejados = document.getElementById('lista-planejados') as HTMLUListElement | null;
   if (!listaPlanejados) return;
 
-  const planejamentos = JSON.parse(localStorage.getItem('planejamentos')) || [];
-  const filtroDataInicio = document.getElementById('filtro-data-inicio')?.value;
-  const filtroDataFim = document.getElementById('filtro-data-fim')?.value;
+  const planejamentos: Planejamento[] = JSON.parse(localStorage.getItem('planejamentos') ?? '[]');
+  const filtroDataInicio = (document.getElementById('filtro-data-inicio') as HTMLInputElement | null)?.value;
+  const filtroDataFim = (document.getElementById('filtro-data-fim') as HTMLInputElement | null)?.value;
 
   const planejamentosFiltrados = planejamentos.filter((planejamento) => {
-    const dataPlanejamento = new Date(planejamento.data.split('/').reverse().join('-'));
-
+    const [day, month, year] = planejamento.data.split('/');
+    const dataPlanejamento = new Date(`${year}-${month}-${day}`);
     if (filtroDataInicio && dataPlanejamento < new Date(filtroDataInicio)) {
       return false;
     }
-
     if (filtroDataFim && dataPlanejamento > new Date(filtroDataFim)) {
       return false;
     }
-
     return true;
   });
 
@@ -92,7 +100,7 @@ function updateListaPlanejados() {
         <div style="flex: 2; margin-right: 15px;">${planejamento.descricao}</div>
         <div style="flex: 1; text-align: right; margin-right: 15px;">R$ ${planejamento.valor.toFixed(2)}</div>
         <div style="flex: 1; text-align: center; margin-right: 15px;">${planejamento.data}</div>
-        <button onclick="removerPlanejamento(${planejamento.id})" style="background-color: #cc0000; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 12px;">X</button>
+        <button data-id="${planejamento.id}" style="background-color: #cc0000; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 12px;">X</button>
       </div>
     `;
     listaPlanejados.appendChild(li);
@@ -106,9 +114,9 @@ function updateResumo() {
 
   if (!totalPlanejadoElement || !saldoAtualElement || !diferencaElement) return;
 
-  const planejamentos = JSON.parse(localStorage.getItem('planejamentos')) || [];
-  const transacoes = JSON.parse(localStorage.getItem('transacoes')) || [];
-  const rendaAtual = parseFloat(localStorage.getItem('rendaAtual')) || 0;
+  const planejamentos: Planejamento[] = JSON.parse(localStorage.getItem('planejamentos') ?? '[]');
+  const transacoes: Transacao[] = JSON.parse(localStorage.getItem('transacoes') ?? '[]');
+  const rendaAtual = parseFloat(localStorage.getItem('rendaAtual') ?? '0');
 
   const totalPlanejado = planejamentos.reduce((sum, p) => sum + p.valor, 0);
 
@@ -129,29 +137,13 @@ function updateResumo() {
   diferencaElement.className = diferenca >= 0 ? 'positivo' : 'negativo';
 }
 
-function removerPlanejamento(id) {
-  const planejamentos = JSON.parse(localStorage.getItem('planejamentos')) || [];
+function removerPlanejamento(id: number) {
+  const planejamentos: Planejamento[] = JSON.parse(localStorage.getItem('planejamentos') ?? '[]');
   const novosPlanejamentos = planejamentos.filter((p) => p.id !== id);
   localStorage.setItem('planejamentos', JSON.stringify(novosPlanejamentos));
-
-  // Atualizar todas as listas de planejamentos na página
-  const listasPlanejados = document.querySelectorAll('#lista-planejados');
-  listasPlanejados.forEach(lista => {
-    if (lista) {
-      const item = lista.querySelector(`button[onclick="removerPlanejamento(${id})"]`)?.closest('li');
-      if (item) {
-        item.remove();
-      }
-    }
-  });
-
+  updateListaPlanejados();
   updateResumo();
 }
-
-// Tornar a função acessível globalmente
-window.removerPlanejamento = removerPlanejamento;
-
-export { removerPlanejamento };
 
 export function initPlanejamento() {
   initializePlanejamento();

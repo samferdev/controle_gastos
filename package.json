@@ -4,14 +4,41 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/pagina-inicial.ts" 
+    "start": "tsc && node dist/pagina-inicial.ts"
+  },
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "ES6",
+    "strict": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "sourceMap": true
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "typescript": "^5.8.3",
     "vite": "^6.3.5"
-  }
+  },
+  "dependencies": {
+    "esbuild": "^0.25.4",
+    "fdir": "^6.4.4",
+    "nanoid": "^3.3.11",
+    "picocolors": "^1.1.1",
+    "picomatch": "^4.0.2",
+    "postcss": "^8.5.3",
+    "rollup": "^4.41.0",
+    "source-map-js": "^1.2.1",
+    "tinyglobby": "^0.2.13"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samferdev/controle_gastos.git"
+  },
+  "bugs": {
+    "url": "https://github.com/samferdev/controle_gastos/issues"
+  },
+  "homepage": "https://github.com/samferdev/controle_gastos#readme",
+  "description": ""
 }

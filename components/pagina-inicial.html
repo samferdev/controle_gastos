@@ -5,14 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gerenciador Financeiro</title>
-  <link rel="stylesheet" href="../pagina-inicial/pagina-inicial.css">
+  <link rel="stylesheet" href="../components/pagina-inicial.css">
 
 </head>
 
 <body>
   <nav>
     <div id="user">
-      <img src="../assets/logo.png" alt="Logo do Gerenciador Financeiro" id="logo-image" />
+      <img src="../components/assets/logo.png" alt="Logo do Gerenciador Financeiro" id="logo-image" />
       <div id="user-infos">
         <span id="nomeUsuario"></span>
       </div>
@@ -94,12 +94,12 @@
         <input type="text" id="renda-atual" placeholder="Valor (ex: 100.00)">
       </section>
 
-      <!--
+
       <section class="historico">
         <h2>Histórico</h2>
         <ul id="lista-transacoes"></ul>
       </section>
-      -->
+
 
       <section class="planejamento">
         <h2>Planejamentos Futuros</h2>
@@ -129,13 +129,12 @@
 
     </main>
   </div>
+  <script type="module" src="../dist/gastos-previstos.js"></script>
+  <script type="module" src="../dist/home.js"></script>
+  <script type="module" src="../dist/historico.js"></script>
+  <script type="module" src="../dist/planejamento.js"></script>
+  <script type="module" src="../dist/gastos-previstos.js"></script>
 
-  <script type="module" src="./pagina-inicial.ts"></script>
-  <script type="module" src="../utils/auth.js"></script>
-  <script type="module" src="./home.js"></script>
-  <script type="module" src="./historico.js"></script>
-  <script type="module" src="./planejamento.js"></script>
-  <script type="module" src="./gastos-previstos.js"></script>
 
 </body>
 
