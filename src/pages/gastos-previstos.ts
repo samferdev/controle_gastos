@@ -96,8 +96,8 @@ function removerGastos(id: number) {
 function updateResumo() {
   // Atualize o resumo dos gastos previstos aqui, se necessário
 }
-
 // Initialize on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
   initGastosPrevistos();
 });
+

@@ -1,8 +1,7 @@
-// DOM Elements - Pegando elementos do HTML com tipagem adequada
-const formTransacao = document.getElementById('form-transacao') as HTMLFormElement;
-const listaTransacoes = document.getElementById('lista-transacoes') as HTMLUListElement;
-const saldoElement = document.getElementById('saldo') as HTMLSpanElement;
-const rendaAtualInput = document.getElementById('renda-atual') as HTMLInputElement;
+import { initNavigation } from './navigation';
+import { TransactionForm } from './components/transactions/TransactionForm';
+import { TransactionList } from './components/transactions/TransactionList';
+import { authService } from './services/authService';
 
 // Interface para definir a estrutura das transações
 interface Transacao {
@@ -13,42 +12,104 @@ interface Transacao {
     data: string;
 }
 
-// Estado - Variáveis para armazenar as transações e a renda atual
-let transacoes: Transacao[] = [];
-let rendaAtual: number = 0;
+class PaginaInicial {
+    private transacoes: Transacao[] = [];
+    private rendaAtual: number = 0;
+    private saldoElement: HTMLSpanElement;
+    private formTransacao: HTMLFormElement;
+    private listaTransacoes: HTMLUListElement;
 
-// Recupera dados do localStorage e evita erros na leitura
-try {
-    const transacoesSalvas = localStorage.getItem('transacoes');
-    transacoes = transacoesSalvas ? JSON.parse(transacoesSalvas) : [];
-} catch (e) {
-    console.error('Erro ao carregar transações:', e);
-}
+    constructor() {
+        this.saldoElement = document.getElementById('saldo') as HTMLSpanElement;
+        this.formTransacao = document.getElementById('form-transacao') as HTMLFormElement;
+        this.listaTransacoes = document.getElementById('lista-transacoes') as HTMLUListElement;
+        this.carregarDados();
+        this.inicializarEventos();
+    }
 
-try {
-    const rendaSalva = localStorage.getItem('rendaAtual');
-    rendaAtual = rendaSalva ? parseFloat(rendaSalva) : 0;
-} catch (e) {
-    console.error('Erro ao carregar rendaAtual:', e);
-}
+    private carregarDados(): void {
+        try {
+            const transacoesSalvas = localStorage.getItem('transacoes');
+            this.transacoes = transacoesSalvas ? JSON.parse(transacoesSalvas) : [];
+        } catch (e) {
+            console.error('Erro ao carregar transações:', e);
+            this.transacoes = [];
+        }
 
-// Inicialização da interface com os valores corretos
-updateSaldo();
-updateListaTransacoes();
-if (rendaAtual > 0 && rendaAtualInput) {
-    rendaAtualInput.value = rendaAtual.toFixed(2);
-}
+        try {
+            const rendaSalva = localStorage.getItem('rendaAtual');
+            this.rendaAtual = rendaSalva ? parseFloat(rendaSalva) : 0;
+        } catch (e) {
+            console.error('Erro ao carregar rendaAtual:', e);
+            this.rendaAtual = 0;
+        }
 
-// Eventos
-if (formTransacao) {
-    formTransacao.addEventListener('submit', (e: Event) => {
-        e.preventDefault();
+        this.atualizarSaldo();
+    }
+
+    private inicializarEventos(): void {
+        // Configurar edição de saldo
+        const editarSaldoBtn = document.getElementById('editar-saldo');
+        const editarContainer = document.getElementById('editar-container');
+
+        if (editarSaldoBtn && editarContainer) {
+            editarSaldoBtn.addEventListener('click', () => {
+                editarContainer.style.display = 'block';
+                editarContainer.innerHTML = `
+                    <input type="number" id="novo-saldo" step="0.01" min="0" placeholder="Novo saldo">
+                    <button onclick="window.confirmarNovoSaldo()">Confirmar</button>
+                `;
+                editarSaldoBtn.style.display = 'none';
+            });
+        }
+
+        // Configurar formulário de transação
+        if (this.formTransacao) {
+            this.formTransacao.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.adicionarTransacao();
+            });
+        }
+
+        // Expor função global para confirmar novo saldo
+        (window as any).confirmarNovoSaldo = () => {
+            const input = document.getElementById('novo-saldo') as HTMLInputElement;
+            const novoSaldo = parseFloat(input.value);
+
+            if (!isNaN(novoSaldo) && novoSaldo >= 0) {
+                this.rendaAtual = novoSaldo;
+                localStorage.setItem('rendaAtual', novoSaldo.toString());
+                this.atualizarSaldo();
+
+                // Resetar interface de edição
+                const editarContainer = document.getElementById('editar-container');
+                const editarSaldoBtn = document.getElementById('editar-saldo');
+                if (editarContainer && editarSaldoBtn) {
+                    editarContainer.style.display = 'none';
+                    editarContainer.innerHTML = '';
+                    editarSaldoBtn.style.display = 'block';
+                }
+            } else {
+                alert('Por favor, insira um valor válido maior ou igual a zero.');
+            }
+        };
+
+        // Expor função global para remover transação
+        (window as any).removerTransacao = (id: number) => {
+            this.transacoes = this.transacoes.filter(t => t.id !== id);
+            this.salvarTransacoes();
+            this.atualizarSaldo();
+            this.atualizarListaTransacoes();
+        };
+    }
+
+    private adicionarTransacao(): void {
         const descricao = (document.getElementById('descricao') as HTMLInputElement).value;
         const valor = parseFloat((document.getElementById('valor') as HTMLInputElement).value);
         const tipo = (document.getElementById('tipo') as HTMLSelectElement).value as 'renda' | 'despesa';
 
-        if (isNaN(valor) || valor <= 0) {
-            alert('Insira um valor válido.');
+        if (!descricao || isNaN(valor) || valor <= 0) {
+            alert('Por favor, preencha todos os campos corretamente.');
             return;
         }
 
@@ -57,78 +118,81 @@ if (formTransacao) {
             descricao,
             valor,
             tipo,
-            data: new Date().toLocaleDateString(),
+            data: new Date().toLocaleDateString()
         };
 
-        transacoes.push(transacao);
-        saveTransacoes();
-        updateSaldo();
-        updateListaTransacoes();
-        formTransacao.reset();
-    });
-}
-
-if (rendaAtualInput) {
-    rendaAtualInput.addEventListener('change', (e: Event) => {
-        rendaAtual = parseFloat((e.target as HTMLInputElement).value) || 0;
-        localStorage.setItem('rendaAtual', rendaAtual.toString());
-        updateSaldo();
-    });
-}
-
-// Função para atualizar o saldo
-function updateSaldo(): void {
-    if (!saldoElement) return;
-
-    const totalDespesas = transacoes
-        .filter(t => t.tipo === 'despesa')
-        .reduce((sum, t) => sum + t.valor, 0);
-
-    const totalRenda = transacoes
-        .filter(t => t.tipo === 'renda')
-        .reduce((sum, t) => sum + t.valor, 0);
-
-    const saldo = rendaAtual + totalRenda - totalDespesas;
-    saldoElement.textContent = `R$ ${saldo.toFixed(2)}`;
-}
-
-// Atualiza a lista de transações na tela
-function updateListaTransacoes(): void {
-    if (!listaTransacoes) return;
-
-    listaTransacoes.innerHTML = '';
-    transacoes.forEach(transacao => {
-        const li = document.createElement('li');
-        li.className = transacao.tipo;
-        li.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 0;">
-                <div style="flex: 2; margin-right: 15px;">${transacao.descricao}</div>
-                <div style="flex: 1; text-align: right; margin-right: 15px;">R$ ${transacao.valor.toFixed(2)}</div>
-                <div style="flex: 1; text-align: center; margin-right: 15px;">${transacao.data}</div>
-                <button onclick="removerTransacao(${transacao.id})" style="background-color: #cc0000; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 12px;">X</button>
-            </div>
-        `;
-        listaTransacoes.appendChild(li);
-    });
-}
-
-// Função para remover uma transação
-function removerTransacao(id: number): void {
-    transacoes = transacoes.filter(t => t.id !== id);
-    saveTransacoes();
-    updateSaldo();
-    updateListaTransacoes();
-}
-
-// Salva as transações no localStorage e verifica autenticação
-function saveTransacoes(): void {
-    const nome = localStorage.getItem('nomeUsuario');
-    if (!nome) {
-        alert('Usuário não autenticado. Redirecionando para a página de login.');
-        window.location.href = '../login/login.html';
+        this.transacoes.push(transacao);
+        this.salvarTransacoes();
+        this.atualizarSaldo();
+        this.atualizarListaTransacoes();
+        this.formTransacao.reset();
     }
-    localStorage.setItem('transacoes', JSON.stringify(transacoes));
+
+    private atualizarSaldo(): void {
+        if (!this.saldoElement) return;
+
+        const totalDespesas = this.transacoes
+            .filter(t => t.tipo === 'despesa')
+            .reduce((sum, t) => sum + t.valor, 0);
+
+        const totalRenda = this.transacoes
+            .filter(t => t.tipo === 'renda')
+            .reduce((sum, t) => sum + t.valor, 0);
+
+        const saldo = this.rendaAtual + totalRenda - totalDespesas;
+        this.saldoElement.textContent = `R$ ${saldo.toFixed(2)}`;
+    }
+
+    private atualizarListaTransacoes(): void {
+        if (!this.listaTransacoes) return;
+
+        this.listaTransacoes.innerHTML = '';
+
+        if (this.transacoes.length === 0) {
+            this.listaTransacoes.innerHTML = '<li class="sem-transacoes">Nenhuma transação encontrada.</li>';
+            return;
+        }
+
+        this.transacoes.forEach(transacao => {
+            const li = document.createElement('li');
+            li.className = transacao.tipo;
+            li.innerHTML = `
+                <div class="transacao-item">
+                    <div class="descricao">${transacao.descricao}</div>
+                    <div class="valor">R$ ${transacao.valor.toFixed(2)}</div>
+                    <div class="data">${transacao.data}</div>
+                    <button onclick="window.removerTransacao(${transacao.id})" class="remover-transacao">X</button>
+                </div>
+            `;
+            this.listaTransacoes.appendChild(li);
+        });
+    }
+
+    private salvarTransacoes(): void {
+        const nome = localStorage.getItem('nomeUsuario');
+        if (!nome) {
+            alert('Usuário não autenticado. Redirecionando para a página de login.');
+            window.location.href = '../login/login.html';
+            return;
+        }
+        localStorage.setItem('transacoes', JSON.stringify(this.transacoes));
+    }
 }
 
-// Expondo a função global para o HTML
-(window as any).removerTransacao = removerTransacao;
+// Initialize components when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Check authentication first
+    authService.checkAuth();
+
+    // Initialize navigation
+    initNavigation();
+
+    // Initialize main page functionality
+    new PaginaInicial();
+
+    // Display user name
+    const nomeUsuarioSpan = document.getElementById('nomeUsuario');
+    if (nomeUsuarioSpan) {
+        nomeUsuarioSpan.textContent = authService.getNomeUsuario() || '';
+    }
+});

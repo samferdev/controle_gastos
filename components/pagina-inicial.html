@@ -74,7 +74,8 @@
     <main>
       <section class="saldo">
         <h2>Saldo Atual: <span id="saldo">R$ 0,00</span></h2>
-        <button type="submit">Editar</button>
+        <button id="editar-saldo" type="button">Editar</button>
+        <span id="editar-container" style="display: none;"></span>
       </section>
 
       <section class="transacao">
@@ -89,51 +90,36 @@
         </form>
       </section>
 
-      <section class="renda-atual">
-        <h2>Entre com sua renda Atual</h2>
-        <input type="text" id="renda-atual" placeholder="Valor (ex: 100.00)">
-      </section>
-
-
       <section class="historico">
         <h2>Histórico</h2>
         <ul id="lista-transacoes"></ul>
       </section>
 
-
       <section class="planejamento">
         <h2>Planejamentos Futuros</h2>
-        <ul id="lista-planejados"></ul>
         <form id="form-planejado">
           <input type="text" id="descricao-planejado" placeholder="Meta ou fatura" required />
           <input type="number" id="valor-planejado" placeholder="Valor futuro" required />
           <button type="submit">Adicionar</button>
         </form>
+        <ul id="lista-planejados"></ul>
       </section>
-
 
       <section class="gastos-previstos">
         <h2>Gastos Previstos</h2>
         <div class="novo-gasto">
-          <form id="form-planejado">
-            <input type="text" id="descricao-planejado" placeholder="Gasto previsto" required />
-            <input type="number" id="valor-planejado" placeholder="Valor futuro" required />
-            <button id="adicionar-gastos-btn" type="submit">Adicionar</button>
+          <form id="form-gasto-previsto">
+            <input type="text" id="descricao-gasto-previsto" placeholder="Gasto previsto" required />
+            <input type="number" id="valor-gasto-previsto" placeholder="Valor futuro" required />
+            <button type="submit">Adicionar</button>
           </form>
         </div>
-        <ul id="lista-planejados">
-
-        </ul>
+        <ul id="lista-gastos-previstos"></ul>
       </section>
-
-
     </main>
   </div>
-  <script type="module" src="../dist/gastos-previstos.js"></script>
-  <script type="module" src="../dist/home.js"></script>
-  <script type="module" src="../dist/historico.js"></script>
-  <script type="module" src="../dist/planejamento.js"></script>
-  <script type="module" src="../dist/gastos-previstos.js"></script>
+  <script type="module" src="../src/pagina-inicial.ts"></script>
+  <script type="module" src="../src/modules/gastos-previstos.ts"></script>
 
 
 </body>

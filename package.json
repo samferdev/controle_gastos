@@ -1,10 +1,11 @@
 {
   "name": "controle_gastosts",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/pagina-inicial.ts"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "compilerOptions": {
     "target": "ES6",
