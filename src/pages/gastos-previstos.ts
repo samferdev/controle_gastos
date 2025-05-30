@@ -3,6 +3,7 @@ type Gasto = {
   descricao: string;
   valor: number;
   data: string;
+  parcelas: number;
 };
 
 export function initGastosPrevistos() {
@@ -21,14 +22,30 @@ function handleGastoPrevisto(event: Event) {
 
   const descricaoInput = document.getElementById('descricao-gasto-previstos') as HTMLInputElement | null;
   const valorInput = document.getElementById('valor-gasto-previstos') as HTMLInputElement | null;
+  const parcelasInput = document.getElementById('parcelas') as HTMLInputElement | null;
 
-  if (!descricaoInput || !valorInput) return;
+  if (!descricaoInput || !valorInput || !parcelasInput) {
+    console.error('Campos do formulário não encontrados');
+    return;
+  }
 
   const descricao = descricaoInput.value.trim();
   const valor = parseFloat(valorInput.value);
+  const parcelas = parseInt(parcelasInput.value);
 
-  if (!descricao || isNaN(valor)) {
-    alert('Preencha todos os campos corretamente.');
+  // Validação específica para cada campo
+  if (!descricao || descricao.length < 3) {
+    alert('A descrição deve ter pelo menos 3 caracteres.');
+    return;
+  }
+
+  if (isNaN(valor) || valor <= 0) {
+    alert('O valor deve ser um número maior que zero.');
+    return;
+  }
+
+  if (isNaN(parcelas) || parcelas < 1) {
+    alert('O número de parcelas deve ser pelo menos 1.');
     return;
   }
 
@@ -37,15 +54,20 @@ function handleGastoPrevisto(event: Event) {
     descricao,
     valor,
     data: new Date().toLocaleDateString(),
+    parcelas,
   };
 
-  const gastos: Gasto[] = JSON.parse(localStorage.getItem('gastos') || '[]');
-  gastos.push(gasto);
-  localStorage.setItem('gastos', JSON.stringify(gastos));
-
-  renderizarGastos();
-  updateResumo();
-  (event.target as HTMLFormElement).reset();
+  try {
+    const gastos: Gasto[] = JSON.parse(localStorage.getItem('gastos') || '[]');
+    gastos.push(gasto);
+    localStorage.setItem('gastos', JSON.stringify(gastos));
+    renderizarGastos();
+    updateResumo();
+    (event.target as HTMLFormElement).reset();
+  } catch (error) {
+    console.error('Erro ao salvar gasto:', error);
+    alert('Erro ao salvar o gasto. Por favor, tente novamente.');
+  }
 }
 
 function renderizarGastos() {
@@ -62,6 +84,7 @@ function renderizarGastos() {
           <div style="flex: 1; text-align: right; margin-right: 15px;">R$ ${gasto.valor.toFixed(2)}</div>
           <div style="flex: 1; text-align: center; margin-right: 15px;">${gasto.data}</div>
           <button class="remover-gasto-btn" data-id="${gasto.id}" style="background-color: #cc0000; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 12px;">X</button>
+          <div style="flex: 1; text-align: center; margin-right: 15px;">${gasto.parcelas}</div>
         </div>
       `;
       lista.appendChild(li);
@@ -100,4 +123,5 @@ function updateResumo() {
 document.addEventListener('DOMContentLoaded', () => {
   initGastosPrevistos();
 });
+
 

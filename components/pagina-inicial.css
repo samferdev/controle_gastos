@@ -810,3 +810,47 @@ li.renda {
 li.despesa {
   border-left-color: #cc0000 !important;
 }
+
+.duvidas {
+  margin-top: auto;
+  padding: 8px;
+  border-top: 1px solid #272727;
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  bottom: 0;
+  background-color: #0f0f0f;
+}
+
+#duvidas-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 8px 12px;
+  width: 100%;
+  justify-content: flex-start;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
+  margin: 0 8px;
+}
+
+#duvidas-btn:hover {
+  background-color: #272727;
+  transform: translateX(4px);
+}
+
+#duvidas-btn img {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+#duvidas-btn:hover img {
+  transform: scale(1.1);
+}

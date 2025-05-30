@@ -68,6 +68,13 @@
         <span class="item-description">Sair</span>
       </button>
     </div>
+
+    <div class="duvidas">
+      <button id="duvidas-btn">
+        <img src="../components/assets/help_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.png" alt="Ícone Duvidas" />
+        <span class="item-description">Duvidas</span>
+      </button>
+    </div>
   </nav>
 
   <div id="app-container">
@@ -80,9 +87,9 @@
 
       <section class="transacao">
         <form id="form-transacao">
-          <input type="text" id="descricao" placeholder="Descrição" required />
-          <input type="number" id="valor" placeholder="Valor (ex: 100.00)" required />
-          <select id="tipo">
+          <input type="text" id="descricao" placeholder="Descrição" required minlength="3" />
+          <input type="number" id="valor" placeholder="Valor (ex: 100.00)" required step="0.01" min="0" />
+          <select id="tipo" required>
             <option value="renda">Renda</option>
             <option value="despesa">Despesas</option>
           </select>
@@ -100,6 +107,8 @@
         <form id="form-planejado">
           <input type="text" id="descricao-planejado" placeholder="Meta ou fatura" required />
           <input type="number" id="valor-planejado" placeholder="Valor futuro" required />
+          <input type="number" id="parcelas-planejado" placeholder="Número de parcelas" min="1" value="1" required />
+          <input type="date" id="data-vencimento-planejado" required />
           <button type="submit">Adicionar</button>
         </form>
         <ul id="lista-planejados"></ul>
@@ -111,8 +120,10 @@
           <form id="form-gasto-previsto">
             <input type="text" id="descricao-gasto-previsto" placeholder="Gasto previsto" required />
             <input type="number" id="valor-gasto-previsto" placeholder="Valor futuro" required />
+            <input type="number" id="parcelas" placeholder="Parcelas" required />
             <button type="submit">Adicionar</button>
           </form>
+
         </div>
         <ul id="lista-gastos-previstos"></ul>
       </section>

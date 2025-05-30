@@ -2,6 +2,7 @@ import { initNavigation } from './navigation';
 import { TransactionForm } from './components/transactions/TransactionForm';
 import { TransactionList } from './components/transactions/TransactionList';
 import { authService } from './services/authService';
+import { PlanejamentoModule } from './modules/planejamento';
 
 // Interface para definir a estrutura das transações
 interface Transacao {
@@ -189,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize main page functionality
     new PaginaInicial();
+    new PlanejamentoModule();
 
     // Display user name
     const nomeUsuarioSpan = document.getElementById('nomeUsuario');
